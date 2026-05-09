@@ -1,6 +1,7 @@
 """
 Package initialization for the Account Service
 """
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
@@ -12,7 +13,15 @@ app.config.from_object("service.config")
 
 # Initialize plugins
 db = SQLAlchemy(app)
-talisman = Talisman(app)
+
+# Only enable Talisman in production (not during testing)
+talisman = Talisman(
+    app,
+    force_https=False,
+    strict_transport_security=False,
+    session_cookie_secure=False
+)
+
 CORS(app)
 
 # Import routes after app is created

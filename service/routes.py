@@ -129,3 +129,13 @@ def check_content_type(media_type):
         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
         f"Content-Type must be {media_type}",
     )
+
+######################################################################
+# ERROR HANDLERS
+######################################################################
+from service.models import DataValidationError
+
+@app.errorhandler(DataValidationError)
+def request_validation_error(error):
+    """Handles Value Errors from bad data"""
+    return jsonify(error=str(error)), status.HTTP_400_BAD_REQUEST
